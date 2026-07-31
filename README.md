@@ -1,54 +1,98 @@
-# BlogWritingCrew Crew
+# BlogWritingCrew
 
-Welcome to the BlogWritingCrew Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+A multi-agent AI system, built with [crewAI](https://crewai.com), that turns a single topic into a polished blog post. Three agents — a researcher, a writer, and an editor — work one after another, each handing its output to the next.
+
+## How it was built
+
+The project started from the standard `crewai create crew` template and was shaped into a 3-agent pipeline:
+
+- **`config/agents.yaml`** — defines each agent's role, goal, and backstory (Researcher, Writer, Editor)
+- **`config/tasks.yaml`** — defines what each agent has to do and what "done" looks like
+- **`crew.py`** — wires agents to tasks and runs them as a `Process.sequential` crew
+- **`main.py`** — the entry point `crewai run` calls, with a hardcoded `topic` input
+- **LLM** — Google Gemini, configured entirely through `.env` (`MODEL=gemini/...` + `GEMINI_API_KEY`), no code changes needed
+
+### Architecture
+
+```mermaid
+flowchart LR
+    U["crewai run"] --> M["main.py: run()"]
+    M --> C["BlogWritingCrew.crew()"]
+
+    subgraph Crew["Sequential Process"]
+        direction LR
+        R["Researcher Agent"] -->|research brief| W["Writer Agent"]
+        W -->|draft post| E["Editor Agent"]
+    end
+
+    C --> R
+    E --> O["output/blog_post.md"]
+```
+
+### Task pipeline
+
+```mermaid
+sequenceDiagram
+    participant Main as main.py
+    participant Crew as BlogWritingCrew
+    participant LLM as Gemini
+
+    Main->>Crew: kickoff(inputs={topic, current_year})
+    Crew->>LLM: research_task (Researcher)
+    LLM-->>Crew: research brief
+    Crew->>LLM: writing_task (Writer)
+    LLM-->>Crew: draft blog post
+    Crew->>LLM: editing_task (Editor)
+    LLM-->>Crew: polished post
+    Crew-->>Main: output/blog_post.md
+```
+
+### Project structure
+
+```mermaid
+flowchart TD
+    root["blog_writing_crew/"] --> src["src/blog_writing_crew/"]
+    src --> crewpy["crew.py — agents + tasks + crew definition"]
+    src --> mainpy["main.py — run / train / replay / test entry points"]
+    src --> config["config/"]
+    config --> agentsyaml["agents.yaml"]
+    config --> tasksyaml["tasks.yaml"]
+    src --> tools["tools/custom_tool.py — example tool (unused)"]
+    root --> knowledge["knowledge/user_preference.txt — example knowledge source (unused)"]
+    root --> output["output/blog_post.md — final result"]
+```
 
 ## Installation
 
-Ensure you have Python >=3.10 <3.14 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
-
-First, if you haven't already, install uv:
+Requires Python `>=3.10 <3.14`. Dependencies are managed with [uv](https://docs.astral.sh/uv/).
 
 ```bash
 pip install uv
-```
-
-Next, navigate to your project directory and install the dependencies:
-
-(Optional) Lock the dependencies and install them by using the CLI command:
-```bash
 crewai install
 ```
-### Customizing
 
-**Add your `OPENAI_API_KEY` into the `.env` file**
+### Configuration
 
-- Modify `src/blog_writing_crew/config/agents.yaml` to define your agents
-- Modify `src/blog_writing_crew/config/tasks.yaml` to define your tasks
-- Modify `src/blog_writing_crew/crew.py` to add your own logic, tools and specific args
-- Modify `src/blog_writing_crew/main.py` to add custom inputs for your agents and tasks
+Add to `.env`:
 
-## Running the Project
-
-To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
-
-```bash
-$ crewai run
+```
+MODEL=gemini/gemini-flash-lite-latest
+GEMINI_API_KEY=your-key-here
 ```
 
-This command initializes the blog-writing-crew Crew, assembling the agents and assigning them tasks as defined in your configuration.
+- Edit `src/blog_writing_crew/config/agents.yaml` to change agent roles/goals
+- Edit `src/blog_writing_crew/config/tasks.yaml` to change what each task asks for
+- Edit `src/blog_writing_crew/main.py` to change the `topic` input
 
-This example, unmodified, will run the create a `report.md` file with the output of a research on LLMs in the root folder.
+## Running the project
 
-## Understanding Your Crew
+```bash
+crewai run
+```
 
-The blog-writing-crew Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+This runs the researcher → writer → editor pipeline and writes the final post to `output/blog_post.md`.
 
 ## Support
 
-For support, questions, or feedback regarding the BlogWritingCrew Crew or crewAI.
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
-
-Let's create wonders together with the power and simplicity of crewAI.
+- [crewAI documentation](https://docs.crewai.com)
+- [crewAI GitHub](https://github.com/joaomdmoura/crewai)
