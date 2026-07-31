@@ -1,0 +1,35 @@
+research_task:
+  description: >
+    Research {topic} thoroughly. Find key facts, recent trends,
+    and interesting angles that would make a compelling blog post.
+    Focus on providing accurate, up-to-date information.
+  expected_output: >
+    A structured research brief with 8-10 key points about {topic},
+    including relevant facts, statistics, trends, and unique angles
+    that can be used to write an engaging blog post.
+  agent: researcher
+
+writing_task:
+  description: >
+    Using the research brief provided, write an engaging blog post
+    about {topic}. The post should have a compelling introduction,
+    3-4 well-structured main sections, and a strong conclusion.
+    Make it informative yet accessible to a general audience.
+  expected_output: >
+    A complete blog post in markdown format, approximately 800-1000
+    words, with an engaging title, introduction, 3-4 main sections
+    with subheadings, and a conclusion.
+  agent: writer
+
+editing_task:
+  description: >
+    Review and polish the blog post for clarity, grammar, flow,
+    and engagement. Ensure the tone is consistent, the structure
+    is logical, and the content is compelling. Fix any errors
+    and improve readability.
+  expected_output: >
+    A final, polished blog post in markdown format ready for
+    publication. The post should be well-structured, error-free,
+    and engaging.
+  agent: editor
+  output_file: output/blog_post.md
