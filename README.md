@@ -62,6 +62,16 @@ flowchart TD
     root --> output["output/blog_post.md — final result"]
 ```
 
+## Example output
+
+Running `crewai run` executes the researcher → writer → editor pipeline:
+
+![crewai run terminal output](docs/screenshots/terminal-run.png)
+
+...and writes the final result to `output/blog_post.md`:
+
+![Rendered blog post output](docs/screenshots/blog-post-output.png)
+
 ## Installation
 
 Requires Python `>=3.10 <3.14`. Dependencies are managed with [uv](https://docs.astral.sh/uv/).
