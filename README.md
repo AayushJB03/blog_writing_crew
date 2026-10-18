@@ -1,6 +1,6 @@
-# BlogWritingCrew
+# Blog Writing Crew
 
-A multi-agent AI system, built with [crewAI](https://crewai.com), that turns a single topic into a polished blog post. Three agents — a researcher, a writer, and an editor — work one after another, each handing its output to the next.
+A multi-agent AI blog-writing pipeline built with CrewAI and Google Gemini. Researcher, Writer, and Editor agents collaborate sequentially to turn a topic into a polished Markdown blog post.
 
 ## How it was built
 
