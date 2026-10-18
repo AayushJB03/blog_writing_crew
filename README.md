@@ -1,6 +1,6 @@
 # Blog Writing Crew
 
-A multi-agent AI blog-writing pipeline built with CrewAI and Google Gemini. Researcher, Writer, and Editor agents collaborate sequentially to turn a topic into a polished Markdown blog post.
+A multi-agent AI blog-writing pipeline built with [CrewAI](https://crewai.com) and Google Gemini. The Researcher, Writer, and Editor agents collaborate in a sequential workflow to turn a topic into a polished Markdown blog post. This project follows the [NextWork Build a Blog Writing Crew with CrewAI project](https://nextwork.ai/projects/99b558af-381c-5c9e-afef-a2d5e19992c0?track=no).
 
 ## How it was built
 
